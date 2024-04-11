@@ -1,15 +1,21 @@
 "use client";
 
 import React, { useState } from "react";
-import CategoryButton from "./CategoryButton";
 import { toast } from "react-toastify";
 import axios from "axios";
+import CustomFormInput from "./CustomFormInput";
 
-const ProductForm: React.FC = () => {
+const PetrinForm: React.FC = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    category: "Mélangeurs",
+    model: "",
+    farineCapacity: "",
+    patteCapacity: "",
+    volume: "",
+    puissance: "",
+    poids: "",
+    dimensions: "",
     stock: "available",
     images: [] as File[],
   });
@@ -21,13 +27,6 @@ const ProductForm: React.FC = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
-    }));
-  };
-
-  const handleCategoryClick = (category: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      category,
     }));
   };
 
@@ -54,10 +53,17 @@ const ProductForm: React.FC = () => {
     if (
       !formData.name ||
       !formData.description ||
+      !formData.model ||
+      !formData.farineCapacity ||
+      !formData.patteCapacity ||
+      !formData.volume ||
+      !formData.puissance ||
+      !formData.poids ||
+      !formData.dimensions ||
       formData.images.length === 0
     ) {
       toast.error(
-        "Please provide a name, a description, and at least one image"
+        "Please provide a name, description, specifications, and at least one image to add a petrin."
       );
       return;
     }
@@ -66,14 +72,20 @@ const ProductForm: React.FC = () => {
       const formDataToSend = new FormData();
       formDataToSend.append("name", formData.name);
       formDataToSend.append("description", formData.description);
-      formDataToSend.append("category", formData.category);
+      formDataToSend.append("model", formData.model);
+      formDataToSend.append("farineCapacity", formData.farineCapacity);
+      formDataToSend.append("patteCapacity", formData.patteCapacity);
+      formDataToSend.append("volume", formData.volume);
+      formDataToSend.append("puissance", formData.puissance);
+      formDataToSend.append("poids", formData.poids);
+      formDataToSend.append("dimensions", formData.dimensions);
       formDataToSend.append("stock", formData.stock);
       formData.images.forEach((image) => {
         formDataToSend.append("images", image);
       });
 
       await axios.post(
-        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + "/api/products/add",
+        process.env.NEXT_PUBLIC_BACKEND_BASE_URL + "/api/petrins/add",
         formDataToSend,
         {
           headers: {
@@ -82,14 +94,20 @@ const ProductForm: React.FC = () => {
         }
       );
 
-      console.log("Product added successfully:");
-      toast.success("Product added successfully");
+      console.log("Petrin added successfully:");
+      toast.success("Pétrin added successfully");
 
       // Clear form data after successful submission
       setFormData({
         name: "",
         description: "",
-        category: "Mélangeurs",
+        model: "",
+        farineCapacity: "",
+        patteCapacity: "",
+        volume: "",
+        puissance: "",
+        poids: "",
+        dimensions: "",
         stock: "available",
         images: [],
       });
@@ -97,8 +115,8 @@ const ProductForm: React.FC = () => {
       // Clear image previews
       setImagePreviews([]);
     } catch (error) {
-      console.error("Error adding product:", error);
-      toast.error("Failed to add product" + error);
+      console.error("Error adding petrin:", error);
+      toast.error("Failed to add petrin" + error);
     }
   };
 
@@ -132,36 +150,71 @@ const ProductForm: React.FC = () => {
 
   return (
     <form className="flex flex-col gap-4 w-full" onSubmit={handleSubmit}>
-      <label className="font-semibold">Nom du Produit</label>
-      <input
-        className="w-full p-2 outline-none border-[1px] border-[#D4D2E3] rounded-xl"
-        type="text"
+      <CustomFormInput
+        label="Nom du Pétrin"
         name="name"
         value={formData.name}
         onChange={handleInputChange}
       />
-
-      <label className="font-semibold">Description</label>
-      <textarea
-        className="w-full p-2 outline-none border-[1px] border-[#D4D2E3] rounded-xl"
-        name="description"
-        value={formData.description}
-        onChange={handleInputChange}
-      />
-
-      <label className="font-semibold">Catégorie</label>
-      <div className="flex gap-2">
-        <CategoryButton
-          category="Mélangeurs"
-          selectedCategory={formData.category}
-          onClick={handleCategoryClick}
-        />
-        <CategoryButton
-          category="Mixeurs"
-          selectedCategory={formData.category}
-          onClick={handleCategoryClick}
+      <div className="flex flex-col gap-1">
+        <label className="font-semibold">Description</label>
+        <textarea
+          className="w-full p-2 outline-none border-[1px] border-[#D4D2E3] rounded-xl"
+          name="description"
+          value={formData.description}
+          onChange={handleInputChange}
         />
       </div>
+
+      <div className="flex flex-col sm:flex-row gap-4">
+        <CustomFormInput
+          label="Modèle"
+          name="model"
+          value={formData.model}
+          onChange={handleInputChange}
+        />
+        <CustomFormInput
+          label="Capacité de Farine (KG)"
+          name="farineCapacity"
+          value={formData.farineCapacity}
+          onChange={handleInputChange}
+        />
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-4">
+        <CustomFormInput
+          label="Capacité de Patte (KG)"
+          name="patteCapacity"
+          value={formData.patteCapacity}
+          onChange={handleInputChange}
+        />
+        <CustomFormInput
+          label="Volume (L)"
+          name="volume"
+          value={formData.volume}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div className="flex flex-col sm:flex-row gap-4">
+        <CustomFormInput
+          label="Puissance (KW)"
+          name="puissance"
+          value={formData.puissance}
+          onChange={handleInputChange}
+        />
+        <CustomFormInput
+          label="Poids (kg)"
+          name="poids"
+          value={formData.poids}
+          onChange={handleInputChange}
+        />
+      </div>
+      <CustomFormInput
+        label="Dimensions"
+        name="dimensions"
+        value={formData.dimensions}
+        onChange={handleInputChange}
+      />
 
       <div className="flex items-center gap-4">
         <label className="font-semibold">En Stock</label>
@@ -175,7 +228,7 @@ const ProductForm: React.FC = () => {
       </div>
 
       <div className="w-full">
-        <label className="font-semibold">Images du Produit</label>
+        <label className="font-semibold">Images du Pétrin</label>
 
         <div className="mt-2 flex flex-col items-center justify-center rounded-2xl border border-[#D4D2E3] px-6 py-10 text-center">
           <div className="flex text-sm leading-6 text-gray-600">
@@ -239,10 +292,10 @@ const ProductForm: React.FC = () => {
         type="submit"
         className="bg-primary text-white rounded-lg p-2 w-1/2  hover:scale-[102%] app_transition "
       >
-        Ajouter le produit
+        Ajouter le Pétrin
       </button>
     </form>
   );
 };
 
-export default ProductForm;
+export default PetrinForm;

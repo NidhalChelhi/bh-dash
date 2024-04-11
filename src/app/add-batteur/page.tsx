@@ -1,18 +1,17 @@
 import React from "react";
-import ProductForm from "@/components/ProductForm";
-import SubmitButton from "@/components/SubmitButton";
+import BatteurForm from "@/components/BatteurForm";
 
-const ProductPage: React.FC = () => {
+const AddBatteurPage: React.FC = () => {
   return (
     <main className="flex p-4 lg:p-14 w-full min-h-screen text-grey">
       <div className="w-full bg-white rounded-3xl shadow-2xl shadow-gray-200 px-4 md:px-8 p-8 flex flex-col gap-4">
         <h1 className="text-2xl sm:text-3xl font-bold text-primary">
-          Ajouter un Produit
+          Ajouter un Batteur Mélangeur
         </h1>
-        <ProductForm />
+        <BatteurForm />
       </div>
     </main>
   );
 };
 
-export default ProductPage;
+export default AddBatteurPage;

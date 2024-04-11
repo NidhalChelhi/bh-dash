@@ -2,9 +2,7 @@
 import {
   ShoppingCart,
   PackagePlus,
-  Mail,
   LogOut,
-  Menu,
   X,
   ChevronDown,
 } from "lucide-react";
@@ -13,9 +11,10 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const pages = [
-  { title: "Produits", route: "/products", icon: ShoppingCart },
-  { title: "Ajouter un produit", route: "/add-product", icon: PackagePlus },
-  // { title: "Messages", route: "/messages", icon: Mail },
+  { title: "Batteurs Mélangeurs", route: "/batteurs", icon: ShoppingCart },
+  { title: "Pétrins Spirale", route: "/petrins", icon: ShoppingCart },
+  { title: "Ajouter un batteur", route: "/add-batteur", icon: PackagePlus },
+  { title: "Ajouter un pétrin", route: "/add-petrin", icon: PackagePlus },
   { title: "Se Déconnecter", route: "/", icon: LogOut },
 ];
 
